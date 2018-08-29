@@ -1,0 +1,16 @@
+<view>
+  <view class='weui-cell'> 
+    <view class='weui-cell_input'> 
+      <input placeholder='手机号' bindinput='phoneInp' ></input>
+    </view>
+  </view>
+  <view class='weui-cell'>
+    <view class='weui-cell_input'>
+        <input placeholder='验证码' bindinput='codeInp'></input>
+      </view>
+    <button bindtap='codeBtn' type='warn' size='mini'>{{time}}</button>
+  </view>
+  <view class='weui-cell'>
+    <button bindtap='loginBtn'>登录</button>
+  </view>
+</view>
