@@ -38,6 +38,13 @@ App({
     })
   },
   globalData: {
+    api_url: 'https://www.jiachao.online',
+    header: {
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'x-access-origin': 'WECHATMINIAPP',
+      'x-access-token': ''
+    },
     userInfo: null
   }
 })
