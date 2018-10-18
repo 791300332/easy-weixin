@@ -18,7 +18,6 @@ function requestGet(obj){
 }
 
 function requestPost(obj) {
-  debugger
   wx.request({
     url: getApp().globalData.api_url + obj.url,
     data: obj.data,
