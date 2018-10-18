@@ -7,7 +7,8 @@ Page({
     mobileNumber:'',
     code:'',
     time:'获取验证码',
-    second:60},
+    second:60,
+    btnDisabled:false},
   onLoad:function(obj) {
     this.setData({
       userKey:obj.userKey,
@@ -37,12 +38,14 @@ Page({
       if(obj.data.second > 0) {
         var c = obj.setTime(obj);
         obj.setData({
-          time:obj.data.second
+          time:obj.data.second,
+          btnDisabled:true
         })
       } else {
         obj.setData({
           second:60,
-          time:'获取验证码'
+          time:'获取验证码',
+          btnDisabled:false
         })
       }
     },1000)

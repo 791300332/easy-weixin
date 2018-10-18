@@ -1,0 +1,9 @@
+<view>
+  <view>
+    <input placeholder='搜索内容'></input>
+  </view>
+  <view>
+    <image></image>
+    <image></image>
+  </view>
+</view>

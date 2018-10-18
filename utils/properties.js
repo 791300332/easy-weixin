@@ -6,7 +6,7 @@ const header = {
 
 function requestGet(obj){
   wx.request({
-    url:'https://www.jiachao.online' + obj.url,
+    url:api_url + obj.url,
     data:obj.data,
     header:header,
     success:function(e){
@@ -25,13 +25,13 @@ function requestGet(obj){
 }
 
 function requestPost(obj) {
+  debugger
   wx.request({
-    url: 'https://www.jiachao.online' + obj.url,
+    url: api_url + obj.url,
     data: obj.data,
     header: header,
     method:'POST',
     success: function (e) {
-      console.log(e);
       var data = e.data;
       var code = data.code;
       var des = data.description;
