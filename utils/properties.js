@@ -1,16 +1,9 @@
-var api_url = 'https://www.jiachao.online'
-const header = {
-  'Content-Type':'application/json',
-  'Accept':'*/*',
-  'x-access-origin':'WECHATMINIAPP'}
-
 function requestGet(obj){
   wx.request({
-    url:api_url + obj.url,
+    url: getApp().globalData.api_url + obj.url,
     data:obj.data,
-    header:header,
+    header: getApp().globalData.header,
     success:function(e){
-      console.log(e);
       var data = e.data;
       var code = data.code;
       var des = data.description;
@@ -27,15 +20,20 @@ function requestGet(obj){
 function requestPost(obj) {
   debugger
   wx.request({
-    url: api_url + obj.url,
+    url: getApp().globalData.api_url + obj.url,
     data: obj.data,
-    header: header,
+    header: getApp().globalData.header,
     method:'POST',
     success: function (e) {
       var data = e.data;
       var code = data.code;
       var des = data.description;
       var result = data.result;
+      var token = e.header['x-access-token'];
+      if(token != null && token != '' && token != 'undefind') {
+        getApp().globalData.header['x-access-token'] = token;
+      }
+        
       switch (code) {
         case '0': obj.success(result); break;
         case 'WEMAILL_ACCOUNT_1127': 
