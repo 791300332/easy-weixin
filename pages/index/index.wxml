@@ -1,11 +1,19 @@
 <!--index.wxml-->
 <view class="page-body">
   <view>
-    <input placeholder='姓名或手机号搜索' confirm-type="search"></input>
-  </view>
-  <view>
-    <view class='weui-cell' wx:for="{{array}}" >
-      {{item.phone}}
+    <image src="{{userInfo.avatarUrl}}" class="userinfo-avatar" style='float:left'></image>
+    <view style='float:left;margin-top:15px;'>
+      <view>
+        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      </view>
+      <view>
+        <text style='font-size:13px;color:green'>倔强青铜III</text>
+      </view>
+    </view>
+    <view class="view-contact">
+      <button class='button-contact' open-type="contact" bindcontact="handleContact">
+        <image src='{{lxkf}}' class='image-contact'></image> 
+      </button>
     </view>
   </view>
 </view>

@@ -1,1 +1,40 @@
-@import "../../lib/common.wxss"
+@import "../../lib/common.wxss";
+
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.view-contact {
+  float:right;
+  margin-top:15px;
+}
+
+.button-contact {
+  width:45px;
+  height:45px;
+  background:transparent;
+}
+
+.image-contact {
+  width:45px;
+  height:45px;
+  margin-left:-15px;
+}

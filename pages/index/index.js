@@ -5,6 +5,7 @@ const app = getApp()
 Page({
   data: {
     userInfo: {},
+    lxkf:app.globalData.api_url + "/images/lxkf.png",
     hasUserInfo: false,
     array:[{"phone":"18767104662"},{"phone":"test"}]
   },
