@@ -1,7 +1,7 @@
 <!--index.wxml-->
-<view class="page-body">
-   <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-  <view  wx:else>
+<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+<view wx:else class="page-body">
+  <view>
     <image src="{{userInfo.avatarUrl}}" class="userinfo-avatar" style='float:left'></image>
     <view style='float:left;margin-top:15px;'>
       <view>
@@ -15,6 +15,21 @@
       <button class='button-contact' open-type="contact" bindcontact="handleContact">
         <image src='{{lxkf}}' class='image-contact'></image> 
       </button>
+    </view>
+  </view>
+  <view style="margin-top:90px">
+    <image src='{{lxkf}}' style='margin-left:45px;width:20px;height:20px'></image>
+    ffdklfkjlaskdsfjlasdkfj
+  </view>
+  <view style='margin-top:15px'>
+    <image src="{{lxkf}}" style="float:left;width:60%;"></image>
+    <view style='float:right;width:40%'>
+      <view>
+        <image src="{{lxkf}}" style='width:100%;height:120px;float:right'></image>
+      </view>
+      <view>
+        <image src="{{lxkf}}" style='width:100%;height:120px;float:right'></image>
+      </view>
     </view>
   </view>
 </view>
