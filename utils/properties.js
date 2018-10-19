@@ -38,7 +38,7 @@ function requestPost(obj) {
         case 'WEMAILL_ACCOUNT_1127': 
           var data = JSON.parse(des.replace(/\ufeff/g, ""));
           wx.redirectTo({
-            url: '/pages/login/index?' + "userKey=" + data.userKey + "&userType=" + data.wxUserType 
+            url: '/pages/index/index?' 
           }); break;
         default: wx.showToast({
           title:des,

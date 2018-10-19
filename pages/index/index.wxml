@@ -1,13 +1,14 @@
 <!--index.wxml-->
 <view class="page-body">
-  <view>
+   <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+  <view  wx:else>
     <image src="{{userInfo.avatarUrl}}" class="userinfo-avatar" style='float:left'></image>
     <view style='float:left;margin-top:15px;'>
       <view>
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </view>
       <view>
-        <text style='font-size:13px;color:green'>倔强青铜III</text>
+        <text style='font-size:13px;color:green'>{{userInfo.userLevel}}</text>
       </view>
     </view>
     <view class="view-contact">
