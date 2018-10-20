@@ -9,10 +9,18 @@ Page({
     lxkf: "/images/lxkf.png",
     dtk: "/images/dtk.png",
     gwc: "/images/gwc.png",
-    phb: "/images/phb.png",
+    phb: "/images/ryphb.png",
     userLevel: app.globalData.userLevel,
     canIUse:wx.canIUse('button.open-type.getUserInfo'),
     hasUserInfo:false
+  },
+  onShow: function () {
+    common.post("/user/miniapp/getInfo").then(res => {
+      getApp().globalData.userInfo = res.userInfo
+      if (getApp().userInfoReadyCallback) {
+        getApp().userInfoReadyCallback(res)
+      }
+    })
   },
   onLoad: function () {
     if (app.globalData.userInfo) {
@@ -55,6 +63,11 @@ Page({
   btnDtk:function(){
     wx.navigateTo({
       url: '/pages/question/question'
+    });
+  },
+  btnPhb:function(){
+    wx.navigateTo({
+      url: '/pages/ranking/ranking'
     });
   }
 })

@@ -3,7 +3,7 @@
     {{question.title}}
   </view>
   <view>
-    <textarea style="background-color:#FFFFFF" disabled='true'>
+    <textarea style="background-color:#FFFFFF;width:100%" disabled='true'>
       <import src="/wxParse/wxParse.wxml"/>
       <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
     </textarea>

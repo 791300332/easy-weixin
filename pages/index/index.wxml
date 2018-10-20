@@ -24,18 +24,27 @@
   <view style='margin-top:15px'>
     <view style="float:left;width:55%;">
       <button bindtap='btnDtk' type='default'>
-        <image src="{{dtk}}" style='width:100%' ></image>
+        <image src="{{dtk}}" class='btn-image-big' ></image>
+        <view class='btn-font-big'>
+          开始答题
+        </view>
       </button>
     </view>
     <view style='float:right;width:40%'>
       <view>
         <button bindtap='btnPhb' type='default'>
-          <image src="{{phb}}" style='width:100%;height:120px;float:right'></image>
+          <image src="{{phb}}" class='btn-image'></image>
+          <view class='btn-font'>
+            排行榜
+          </view>
         </button>
       </view>
-      <view style='margin-top:17px;'>
+      <view style='margin-top:18px;'>
         <button bindtap='btnGwc' type='default'>
-          <image src="{{gwc}}" style='width:100%;height:120px;float:right'></image>
+          <image src="{{gwc}}" class='btn-image'></image>
+          <view class='btn-font'>
+            积分兑换
+          </view>
         </button>
       </view>
     </view>

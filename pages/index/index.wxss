@@ -38,3 +38,27 @@
   height:45px;
   margin-left:-15px;
 }
+
+.btn-image {
+  width:48px;
+  height:48px;
+  margin-top:20px
+}
+
+.btn-font {
+  margin-top:-20px;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.btn-image-big {
+  width:64px;
+  height:64px;
+  margin-top:81px;
+}
+
+.btn-font-big {
+  margin-top:-20px;
+  font-size:14px;
+  margin-bottom:81px;
+}

@@ -1,0 +1,28 @@
+<view class="ranking-body">
+  <view>
+    规则介绍
+  </view>
+  <view><!-- 列表 -->
+    <button class='item' wx:for="{{phbList}}"> <!-- 单条 -->
+      <image src="{{url}}" />
+      <view wx:if="{{item.avatarUrl}}">
+        <image src="{{item.avatarUrl}}"/> <!-- 头像 -->
+      </view>
+      <view wx:else>
+        <image src="{{defaultUrl}}"/> <!-- 头像 -->
+      </view>
+      <view class='item-info'>
+        <view wx:if="{{item.nickName}}">
+          <view class="item-info-name">{{item.nickName}}</view><!-- 昵称 -->
+        </view>
+        <view wx:else>
+          <view class="item-info-name">匿名</view><!-- 昵称 -->
+        </view>
+        <view class="item-info-level">{{item.userLevel}}</view><!-- 王者等级 -->
+      </view>
+      <view class='item-question-answer'> <!-- 答了多少道 -->
+        <span style="color:red">{{item.historyScore}}</span>道
+      </view>
+    </button>
+  </view>
+</view>
