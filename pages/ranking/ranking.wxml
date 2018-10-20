@@ -1,10 +1,10 @@
 <view class="ranking-body">
-  <view>
-    规则介绍
+  <view style="display:flex;justify-content:center">
+      <image style="width:100px;height:80px"src="{{url}}"/>
   </view>
   <view><!-- 列表 -->
     <button class='item' wx:for="{{phbList}}"> <!-- 单条 -->
-      <image src="{{url}}" />
+      <span style="float:left;font-size:25px">{{index + 1}}.</span>
       <view wx:if="{{item.avatarUrl}}">
         <image src="{{item.avatarUrl}}"/> <!-- 头像 -->
       </view>

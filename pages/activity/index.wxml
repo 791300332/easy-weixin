@@ -1,9 +1,31 @@
-<view>
+<!--index.wxml-->
+<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+<view wx:else class="page-body">
   <view>
-    <input placeholder='搜索内容'></input>
+    <button>
+      <view class="comsume-score">
+          <span>抽奖消耗积分</span>
+          <text> 30</text>
+      </view>
+      <text>丨</text>
+      <view class="my-score">
+        <span>我的积分</span>
+        <text style="color:red;"> {{userInfo.score}}</text>
+      </view>
+    </button>
   </view>
-  <view>
-    <image></image>
-    <image></image>
+  <button style="float:right;margin:5px" size='mini' type="warn">每日签到</button>
+  <view class='content'>
+    <canvas canvas-id='bgCanvas' id='canvas-bg' class='canvasII'></canvas>
+    <view class='canvasI' style="{{isRotate?'transform:rotate('+isRotate+'deg)':''}};">
+    <canvas canvas-id='canvasI' id="canvas-one" class='canvasI' ></canvas>
+    </view>
+    <cover-image class='start' src="/images/cjks.png" catchtap='start' />
+  </view>
+  <view class="bottom-view">
+    <span>已抽</span> 0 <span>次</span>
+    <view style="text-decoration:underline;">
+      <span style="color:blue">《抽奖活动详细规则》</span>
+    </view>
   </view>
 </view>

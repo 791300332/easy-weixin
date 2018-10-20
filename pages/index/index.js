@@ -10,7 +10,6 @@ Page({
     dtk: "/images/dtk.png",
     gwc: "/images/gwc.png",
     phb: "/images/ryphb.png",
-    userLevel: app.globalData.userLevel,
     canIUse:wx.canIUse('button.open-type.getUserInfo'),
     hasUserInfo:false
   },

@@ -5,7 +5,7 @@ var common = require('../../utils/api.js')
 Page({
   data:{
     phbList:[],
-    url:"/images/lxkf.png",
+    url:"/images/wzry.png",
     defaultUrl:"/images/mrtx.png",
     currentPage:0,
     isLast:false
