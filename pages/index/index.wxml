@@ -22,13 +22,21 @@
     ffdklfkjlaskdsfjlasdkfj
   </view>
   <view style='margin-top:15px'>
-    <image src="{{lxkf}}" style="float:left;width:60%;"></image>
+    <view style="float:left;width:55%;">
+      <button bindtap='btnDtk' type='default'>
+        <image src="{{dtk}}" style='width:100%' ></image>
+      </button>
+    </view>
     <view style='float:right;width:40%'>
       <view>
-        <image src="{{lxkf}}" style='width:100%;height:120px;float:right'></image>
+        <button bindtap='btnPhb' type='default'>
+          <image src="{{phb}}" style='width:100%;height:120px;float:right'></image>
+        </button>
       </view>
-      <view>
-        <image src="{{lxkf}}" style='width:100%;height:120px;float:right'></image>
+      <view style='margin-top:17px;'>
+        <button bindtap='btnGwc' type='default'>
+          <image src="{{gwc}}" style='width:100%;height:120px;float:right'></image>
+        </button>
       </view>
     </view>
   </view>

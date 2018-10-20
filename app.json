@@ -1,13 +1,28 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/login/index"
+    "pages/activity/index",
+    "pages/question/question"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarBackgroundColor": "#FFDEAD",
+    "navigationBarTitleText": "一起答题",
     "navigationBarTextStyle":"black"
+  },
+  "tabBar": {
+    "backgroundColor": "#FFDEAD",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "images/sy.png",
+      "selectedIconPath": "images/syxz.png"
+    },{
+      "pagePath": "pages/activity/index",
+      "text": "每日活动",
+      "iconPath": "images/hd.png",
+      "selectedIconPath": "images/hdxz.png"
+    }]
   },
   "debug":true
 }

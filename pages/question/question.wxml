@@ -1,0 +1,19 @@
+<view class="question-body">
+  <view class='question-title'>
+    {{question.title}}
+  </view>
+  <view>
+    <textarea style="background-color:#FFFFFF" disabled='true'>
+      <import src="/wxParse/wxParse.wxml"/>
+      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+    </textarea>
+  </view>
+  <view class="question-answer">
+    <button id='{{item.id}}' wx:for="{{answer}}" bindtap='btnAnswer'>{{item.value}}</button>
+  </view>
+  <view class="question-answer-list">
+    <block wx:for="{{question.selectAnswers}}">
+      <button  bindtap='btnList' id="{{item}}">{{item}}</button>
+    </block>
+  </view>
+</view>

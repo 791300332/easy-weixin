@@ -6,7 +6,10 @@ var common = require('../../utils/api.js')
 Page({
   data: {
     userInfo: {},
-    lxkf: common.baseURL + "/images/lxkf.png",
+    lxkf: "/images/lxkf.png",
+    dtk: "/images/dtk.png",
+    gwc: "/images/gwc.png",
+    phb: "/images/phb.png",
     userLevel: app.globalData.userLevel,
     canIUse:wx.canIUse('button.open-type.getUserInfo'),
     hasUserInfo:false
@@ -43,12 +46,15 @@ Page({
   getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
     common.post("/user/miniapp/getInfo").then(res =>{
-      app.globalData.userLevel = res.result.userLevel
-    }) 
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true,
-      userLevel:app.globalData.userLevel
+      getApp().globalData.userInfo = res.userInfo
+      if (getApp().userInfoReadyCallback) {
+        getApp().userInfoReadyCallback(res)
+      }
     })
+  },
+  btnDtk:function(){
+    wx.navigateTo({
+      url: '/pages/question/question'
+    });
   }
 })

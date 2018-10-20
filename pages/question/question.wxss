@@ -1,0 +1,37 @@
+@import "../../lib/common.wxss";
+@import "../../wxParse/wxParse.wxss";
+
+.question-body {
+  align-items: center;
+  text-align: center;
+  padding: 20rpx 20rpx;
+}
+
+.question-title {
+  font-size: 24px;
+  color: green;
+}
+
+.question-answer {
+  margin-top:15px;
+  text-align: center;
+}
+
+.question-answer button{
+  display: inline-block;
+  height:46px;
+  width:46px;
+  margin:5px;
+}
+
+.question-answer-list {
+  margin-top:10px;
+  text-align: center;
+}
+
+.question-answer-list button{
+  display: inline-block;
+  height:46px;
+  width:46px;
+  margin:5px;
+}
