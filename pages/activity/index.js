@@ -1,122 +1,151 @@
-const ctx = wx.createCanvasContext("canvasI"); //创建id为canvasI的绘图
 const ctx2 = wx.createCanvasContext("bgCanvas");//创建id为bgCanvas的背景绘图
 var mytime;//跑马灯定时器名称
 var lamp = 0; //判断跑马灯闪烁标记
 var w2 = "";
 var h2 = "";
-var w1 = "";
-var h1 = "";
 //获取应用实例
 const app = getApp()
 var common = require('../../utils/api.js')
 
 Page({
+  //奖品配置
+  awardsConfig: {
+    chance: true,
+    awards: [
+      { 'index': 0, 'name': '谢谢参与' },
+      { 'index': 1, 'name': '10积分' },
+      { 'index': 2, 'name': '20积分' },
+      { 'index': 3, 'name': '50积分' },
+      { 'index': 4, 'name': '100积分' },
+      { 'index': 5, 'name': '666积分' }
+    ]
+  },
 
   /**
    * 页面的初始数据
    */
   data: {
+    awardsList: {},
+    animationData: {},
+    btnDisabled: '',
     userInfo:{},
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     hasUserInfo: false,
-    itemsNum: 6, //大转盘等分数
-    itemsArc: 0, //大转盘每等分角度
     color: ["#FFB932", "#ffd57c"],//扇形的背景颜色交替；
-    text: ["一等奖", "二等奖", "三等奖", "四等奖", "五等奖", "六等奖"],//每个扇形中的文字填充
-    isRotate: 0,
+    text: ["666积分", "100积分", "50积分", "20积分", "10积分", "谢谢参与"],//每个扇形中的文字填充
   },
-  start() { //点击抽奖按钮, 为了达到慢速开始慢速结束的效果，在这里使用css3的过渡效果
-    console.log("start");
-    // 五等奖:0
-    // 六等奖:300
-    // 一等奖:240
-    // 二等奖:180
-    // 三等奖:120
-    // 四等奖:60
-    let that = this;
-
-    // 指定获奖结果
-    let n = that.data.isRotate; //传入指定的旋转角度，内部指定获奖结果。在指定角度上加上旋转基数模拟转盘随机旋转。
-
-    //随机获奖结果
-    let rand = Math.random() * 1000;//取一个随机的旋转角度，使获奖结果随机化。
-    n = n + rand - (rand % 60) + 1440; //1440为旋转基数，最低要旋转1440度，即4圈。rand-(rand%60) 这个是让指针永远停在扇形中心的算法。n + 是为了重复点击的时候有足够的旋转角度。
-    console.log(n % 360);
-    that.setData({
-      isRotate: n,
+  onShow:function(){
+    common.post("/user/miniapp/getInfo").then(res => {
+      getApp().globalData.userInfo = res.result
+      if (getApp().userInfoReadyCallback) {
+        getApp().userInfoReadyCallback(res)
+      }
     })
   },
-  // startt() {
-  //   let that = this;
-  //   let n = that.data.isRotate; //传入指定的旋转角度，内部指定获奖结果。在指定角度上加上旋转基数模拟转盘随机旋转。
-
-  //   //随机获奖结果
-  //   let rand = Math.random() * 1000;//取一个随机的旋转角度，使获奖结果随机化。
-  //   n = n + rand - (rand % 60) + 1440; //1440为旋转基数，最低要旋转1440度，即4圈。rand-(rand%60) 这个是让指针永远停在扇形中心的算法。n + 是为了重复点击的时候有足够的旋转角度。
-  //   ctx.save();
-  //   ctx.beginPath();
-  //   ctx.rotate(w1, h1);
-  //   ctx.rotate(n * Math.PI / 180);
-  //   ctx.draw(true);
-  // },
+  onReady:function(){
+    let that = this;
+    this.drawAwardRoundel();
+    wx.createSelectorQuery().select('#canvas-bg').boundingClientRect(function (rect) {//监听canvas的宽高
+      w2 = parseInt(350 / 2);//获取canvas宽度的一半；
+      h2 = parseInt(350 / 2);//获取canvas高度的一半
+      console.log(w2, h2); //获取canvas宽高一半的原因是为了便于找到中心点
+      that.light();
+    }).exec();
+    mytime = setInterval(that.light, 1000);//启动跑马灯定时器。
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (e) {
     let that = this;
-    let itemsArc = 360 / that.data.itemsNum;//获取大转盘每等分的角度。
-
     common.post("/user/miniapp/getInfo").then(res => {
        that.setData({
          userInfo: res.result,
-         hasUserInfo: true,
-         itemsArc
+         hasUserInfo: (res.result.nickName != null && res.result.nickName != '')?true:false
        }, function () {
-         wx.createSelectorQuery().select('#canvas-one').boundingClientRect(function (rect) {
-           w1 = parseInt(rect.width / 2);
-           h1 = parseInt(rect.height / 2);
-           console.log("w1,h1", w1, h1)
-           that.Items(itemsArc);//每一份扇形的内部绘制。
-         }).exec()
-         mytime = setInterval(that.light, 1000);//启动跑马灯定时器。
+         wx.createSelectorQuery().select('#canvas-bg').boundingClientRect(function (rect) {//监听canvas的宽高
+           w2 = parseInt(rect.width / 2);//获取canvas宽度的一半；
+           h2 = parseInt(rect.height / 2);//获取canvas高度的一半
+           console.log(w2, h2); //获取canvas宽高一半的原因是为了便于找到中心点
+           that.light();
+         }).exec();
+         mytime = setInterval(that.light, 500);//启动跑马灯定时器。
        })
     });
   },
+  //画抽奖圆盘
+  drawAwardRoundel: function () {
+    var awards = this.awardsConfig.awards;
+    var awardsList = [];
+    var turnNum = 1 / awards.length;  // 文字旋转 turn 值
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  // onReady: function () {
-  //   var that = this;
-  //   wx.createSelectorQuery().select('#canvas-bg').boundingClientRect(function (rect) {//监听canvas的宽高
-  //     w2 = parseInt(rect.width / 2);//获取canvas宽度的一半；
-  //     h2 = parseInt(rect.height / 2);//获取canvas高度的一半
-  //     console.log(w2, h2); //获取canvas宽高一半的原因是为了便于找到中心点
-  //     that.light();
-  //   }).exec()
-  // },
+    // 奖项列表
+    for (var i = 0; i < awards.length; i++) {
+      awardsList.push({ turn: i * turnNum + 'turn', lineTurn: i * turnNum + turnNum / 2 + 'turn', award: awards[i].name });
+    }
+
+    this.setData({
+      btnDisabled: this.awardsConfig.chance ? '' : 'disabled',
+      awardsList: awardsList
+    });
+  },
+
+  //发起抽奖
+  playReward: function () {
+    //中奖index
+    var awardIndex = 2;
+    var runNum = 8;//旋转8周
+    var duration = 4000;//时长
+
+    // 旋转角度
+    this.runDeg = this.runDeg || 0;
+    this.runDeg = this.runDeg + (360 - this.runDeg % 360) + (360 * runNum - awardIndex * (360 / 6))
+    //创建动画
+    var animationRun = wx.createAnimation({
+      duration: duration,
+      timingFunction: 'ease'
+    })
+    animationRun.rotate(this.runDeg).step();
+    this.setData({
+      animationData: animationRun.export(),
+      btnDisabled: 'disabled'
+    });
+
+    // 中奖提示
+    var awardsConfig = this.awardsConfig;
+    setTimeout(function () {
+      wx.showModal({
+        title: '恭喜',
+        content: '获得' + (awardsConfig.awards[awardIndex].name),
+        showCancel: false
+      });
+      this.setData({
+        btnDisabled: ''
+      });
+    }.bind(this), duration);
+
+  },
   light() { //跑马灯的绘制
     let that = this;
-    let itemsNum = that.data.itemsNum;
+    let itemsNum = this.awardsConfig.awards.length;
     lamp++;
     if (lamp >= 2) {
       lamp = 0
     }
-    ctx2.beginPath();
-    ctx2.arc(w2, h2, w2, 0, 2 * Math.PI);//绘制底色为红色的圆形
-    ctx2.setFillStyle("#DF1E14");
-    ctx2.fill();
-    ctx2.beginPath();
-    ctx2.arc(w2, h2, w2 - 15, 0, 2 * Math.PI);//绘制底色为深黄的圆形
-    ctx2.setFillStyle("#F5AD26");
-    ctx2.fill();
+    // ctx2.beginPath();
+    // ctx2.arc(w2, h2, w2, 0, 2 * Math.PI);//绘制底色为红色的圆形
+    // ctx2.setFillStyle("#DF1E14");
+    // ctx2.fill();
+    // ctx2.beginPath();
+    // ctx2.arc(w2, h2, w2 - 15, 0, 2 * Math.PI);//绘制底色为深黄的圆形
+    // ctx2.setFillStyle("#F5AD26");
+    // ctx2.fill();
     for (let i = 0; i < itemsNum * 2; i++) {//跑马灯小圆圈比大圆盘等分数量多一倍。
       ctx2.save();
       ctx2.beginPath();
       ctx2.translate(w2, h2);
       ctx2.rotate(30 * i * Math.PI / 180);
       ctx2.arc(0, w2 - 15, 8, 0, 2 * Math.PI);//绘制坐标为(0,-135)的圆形跑马灯小圆圈。
-
       //跑马灯第一次闪烁时与第二次闪烁时绘制相反的颜色，再配上定时器循环闪烁就可以达到跑马灯一闪一闪的效果了。
 
       if (lamp == 0) { //第一次闪烁时偶数奇数的跑马灯各绘制一种颜色
@@ -138,66 +167,23 @@ Page({
     ctx2.draw();
 
   },
-
-  Items(e) {
-    console.log("items,w1,h1", w1, h1)
-    let that = this;
-    let itemsArc = e;//每一份扇形的角度
-    let Num = that.data.itemsNum;//等分数量
-    let text = that.data.text;//放文字的数组
-    for (let i = 0; i < Num; i++) {
-      ctx.beginPath();
-      ctx.moveTo(w1, h1);
-      ctx.arc(w1, h1, w1 - 5, itemsArc * i * Math.PI / 180, (itemsArc + itemsArc * i) * Math.PI / 180);//绘制扇形，注意下一个扇形比上一个扇形多一个itemsArc的角度。
-      ctx.closePath();
-      if (i % 2 == 0) {//绘制偶数扇形和奇数扇形的颜色不同
-        ctx.setFillStyle(that.data.color[0]);
-      } else {
-        ctx.setFillStyle(that.data.color[1]);
-      }
-      ctx.fill();
-      ctx.save();
-      ctx.beginPath();
-      ctx.setFontSize(12);//设置文字字号大小
-      ctx.setFillStyle("#000");//设置文字颜色
-      ctx.setTextAlign("center");//使文字垂直居中显示
-      ctx.setTextBaseline("middle");//使文字水平居中显示
-      ctx.translate(w1, h1);//将原点移至圆形圆心位置
-      ctx.rotate((itemsArc * (i + 2)) * Math.PI / 180);//旋转文字，从 i+2 开始，因为扇形是从数学意义上的第四象限第一个开始的，文字目前的位置是在圆心正上方，所以起始位置要将其旋转2个扇形的角度让其与第一个扇形的位置一致。
-      ctx.fillText(text[i], 0, -(h1 * 0.8));
-      ctx.restore();//保存绘图上下文，使上一个绘制的扇形保存住。
-    }
-    that.Images();
-    ctx.draw(true);//参数为true的时候，保存当前画布的内容，继续绘制
-  },
-
-  Images() {//绘制奖品图片，与绘制文字方法一致。
-    let that = this;
-    let itemsArc = that.data.itemsArc;
-    let Num = that.data.itemsNum;
-    for (let i = 0; i < Num; i++) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.translate(w1, h1);
-      ctx.rotate(itemsArc * (i + 2) * Math.PI / 180);
-      ctx.drawImage("/images/yhq.png", -(w1 * 0.2), -(h1 * 0.6), (w1 * 0.4), (h1 * 0.2));
-      ctx.restore();
-    }
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
-  },
   getUserInfo: function (e) {
-    app.globalData.userInfo = e.detail.userInfo
+    common.post('/user/miniapp/updateInfo', e.detail.userInfo)
     common.post("/user/miniapp/getInfo").then(res => {
-      getApp().globalData.userInfo = res.userInfo
+      app.globalData.userInfo = res.userInfo
       if (getApp().userInfoReadyCallback) {
         getApp().userInfoReadyCallback(res)
       }
+    })
+  },
+  btnSign:function() {
+    let that = this;
+    common.post("/user/miniapp/sgin",{}).then(res =>{
+      common.post("/user/miniapp/getInfo",{}).then(res =>{
+        that.setData({
+          userInfo:res.result
+        })
+      })
     })
   }
 })

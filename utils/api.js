@@ -19,14 +19,19 @@ const http = ({url = '',params = {},...other} = {}) =>{
       ...other,
       complete:(res) =>{
         wx.hideLoading()
-        console.log(`耗时:${Date.now() - time}`)
-        console.log(res)
+        console.log(`耗时:${Date.now() - time}`);
+        console.log(res);
         if (res.statusCode >= 200 && res.statusCode < 300) {
           if (res.header['x-access-token']) {
             wx.setStorageSync('x-access-token', res.header['x-access-token'])
           }
-          if(res.data.code == 0) {
+          var code = res.data.code;
+          if( code == 0) {
             resolve(res.data)
+          } else if ("F_WEBKITS_SECURITY_1003" == code) {
+            wx.navigateTo({
+              url: '/pages/index/index',
+            })
           } else {
             wx.showToast({
               title: res.data.description,
@@ -53,6 +58,8 @@ const getHeader = () =>{
     var token = wx.getStorageSync("x-access-token");
     if(token) {
       header['x-access-token'] = token;
+    } else {
+      header['x-access-token'] = '';
     }
   } catch(e) {
 

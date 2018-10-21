@@ -14,14 +14,31 @@
       </view>
     </button>
   </view>
-  <button style="float:right;margin:5px" size='mini' type="warn">每日签到</button>
-  <view class='content'>
+  <button wx:if="{{userInfo.hasSgin == '0'}}" style="float:right;margin:5px" size='mini' type="warn" bindtap='btnSign'>每日签到</button>
+  <!-- <view class='content' style="transform:perspective(1000);">
     <canvas canvas-id='bgCanvas' id='canvas-bg' class='canvasII'></canvas>
     <view class='canvasI' style="{{isRotate?'transform:rotate('+isRotate+'deg)':''}};">
     <canvas canvas-id='canvasI' id="canvas-one" class='canvasI' ></canvas>
     </view>
-    <cover-image class='start' src="/images/cjks.png" catchtap='start' />
-  </view>
+    <cover-image class='start' src="/images/cjks.png" catchtap='start' ></cover-image>
+  </view> -->
+  <view class="main" style="margin-top:45px">
+		<view class="canvas-container">
+      <canvas canvas-id='bgCanvas' id='canvas-bg' class='canvasII'></canvas>
+			<view  animation="{{animationData}}" class="canvas-content" >
+				<view class="canvas-line">
+					<view class="canvas-litem" wx:for="{{awardsList}}" wx:key="unique" style="-webkit-transform: rotate({{item.lineTurn}});transform: rotate({{item.lineTurn}})"></view>
+				</view>
+        
+				<view class="canvas-list">
+					<view class="canvas-item" wx:for="{{awardsList}}" wx:key="unique">
+				  		<view class="canvas-item-text" style="-webkit-transform: rotate({{item.turn}});transform: rotate({{item.turn}})">{{item.award}}</view>
+					</view>
+				</view>
+			</view>
+			<view bindtap="playReward" class="canvas-btn {{btnDisabled}}">抽奖</view>		
+		</view>
+	</view>
   <view class="bottom-view">
     <span>已抽</span> 0 <span>次</span>
     <view style="text-decoration:underline;">

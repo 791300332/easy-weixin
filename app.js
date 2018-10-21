@@ -25,6 +25,8 @@ App({
                     })
                   }
                 })
+              } else {
+                getApp().globalData.hasScope = false;
               }
             }
           }) 
