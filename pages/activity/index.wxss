@@ -187,6 +187,7 @@
 
 .bottom-view {
   text-align:center;
+  margin-top:5px;
 }
 
 .bottom-view span {

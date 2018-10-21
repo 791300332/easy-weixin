@@ -63,13 +63,13 @@ Page({
          userInfo: res.result,
          hasUserInfo: (res.result.nickName != null && res.result.nickName != '')?true:false
        }, function () {
-         wx.createSelectorQuery().select('#canvas-bg').boundingClientRect(function (rect) {//监听canvas的宽高
-           w2 = parseInt(rect.width / 2);//获取canvas宽度的一半；
-           h2 = parseInt(rect.height / 2);//获取canvas高度的一半
-           console.log(w2, h2); //获取canvas宽高一半的原因是为了便于找到中心点
-           that.light();
-         }).exec();
-         mytime = setInterval(that.light, 500);//启动跑马灯定时器。
+        //  wx.createSelectorQuery().select('#canvas-bg').boundingClientRect(function (rect) {//监听canvas的宽高
+        //    w2 = parseInt(rect.width / 2);//获取canvas宽度的一半；
+        //    h2 = parseInt(rect.height / 2);//获取canvas高度的一半
+        //    console.log(w2, h2); //获取canvas宽高一半的原因是为了便于找到中心点
+        //    that.light();
+        //  }).exec();
+        //  mytime = setInterval(that.light, 500);//启动跑马灯定时器。
        })
     });
   },
@@ -92,38 +92,47 @@ Page({
 
   //发起抽奖
   playReward: function () {
-    //中奖index
-    var awardIndex = 2;
-    var runNum = 8;//旋转8周
-    var duration = 4000;//时长
+    let that = this;
+    common.post("/user/award/start", {}).then(res =>{
+      console.log(res);
+      //中奖index
+      var awardIndex = 6 - parseInt(res.result);
+      var runNum = 8;//旋转8周
+      var duration = 4000;//时长
 
-    // 旋转角度
-    this.runDeg = this.runDeg || 0;
-    this.runDeg = this.runDeg + (360 - this.runDeg % 360) + (360 * runNum - awardIndex * (360 / 6))
-    //创建动画
-    var animationRun = wx.createAnimation({
-      duration: duration,
-      timingFunction: 'ease'
+      // 旋转角度
+      that.runDeg = that.runDeg || 0;
+      that.runDeg = that.runDeg + (360 - that.runDeg % 360) + (360 * runNum - awardIndex * (360 / 6))
+      //创建动画
+      var animationRun = wx.createAnimation({
+        duration: duration,
+        timingFunction: 'ease'
+      })
+      animationRun.rotate(this.runDeg).step();
+      that.setData({
+        animationData: animationRun.export(),
+        btnDisabled: 'disabled'
+      });
+
+      // 中奖提示
+      var awardsConfig = that.awardsConfig;
+      setTimeout(function () {
+        wx.showModal({
+          title: awardIndex != 0?'恭喜':'非常遗憾',
+          content: (awardIndex != 0 ?'获得':'') + (awardsConfig.awards[awardIndex].name),
+          showCancel: false
+        });
+        common.post("/user/miniapp/getInfo",{}).then(res =>{
+          that.setData({
+            btnDisabled: '',
+            userInfo:res.result
+          });
+        })
+        
+      }.bind(that), duration);
+    }).catch( function (reason, data) {
+      console.log(data);
     })
-    animationRun.rotate(this.runDeg).step();
-    this.setData({
-      animationData: animationRun.export(),
-      btnDisabled: 'disabled'
-    });
-
-    // 中奖提示
-    var awardsConfig = this.awardsConfig;
-    setTimeout(function () {
-      wx.showModal({
-        title: '恭喜',
-        content: '获得' + (awardsConfig.awards[awardIndex].name),
-        showCancel: false
-      });
-      this.setData({
-        btnDisabled: ''
-      });
-    }.bind(this), duration);
-
   },
   light() { //跑马灯的绘制
     let that = this;

@@ -37,6 +37,7 @@ const http = ({url = '',params = {},...other} = {}) =>{
               title: res.data.description,
               icon: 'none'
             })
+            reject(res);
           }
         } else {
           reject(res)

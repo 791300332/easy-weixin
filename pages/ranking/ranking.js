@@ -17,8 +17,6 @@ Page({
     if(!this.data.isLast) {
       var tempPage = this.data.currentPage + 1;
       common.post("/user/miniapp/phb", {currentPage:tempPage}).then(res => {
-        console.log(res);
-        console.log(this);
         var temp = [];
         for(var i = 0;i<res.result.list.length;i++) {
           temp.push(res.result.list[i]);
@@ -33,7 +31,6 @@ Page({
           currentPage:res.result.currentPage
         })
       }).catch(res => {
-        console.log(res);
       })
     }
   }

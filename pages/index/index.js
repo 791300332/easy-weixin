@@ -11,14 +11,21 @@ Page({
     gwc: "/images/gwc.png",
     phb: "/images/ryphb.png",
     canIUse:wx.canIUse('button.open-type.getUserInfo'),
-    hasUserInfo:false
+    hasUserInfo:false,
+    notices:[]
   },
   onShow: function () {
+    let that = this;
     common.post("/user/miniapp/getInfo").then(res => {
       getApp().globalData.userInfo = res.result
       if (getApp().userInfoReadyCallback) {
         getApp().userInfoReadyCallback(res)
       }
+    });
+    common.post("/index/notice",{}).then(res=>{
+      that.setData({
+        notices:res.result
+      });
     })
   },
   onLoad: function () {
@@ -55,6 +62,12 @@ Page({
   btnPhb:function(){
     wx.navigateTo({
       url: '/pages/ranking/ranking'
+    });
+  },
+  btnGwc:function(){
+    wx.showToast({
+      icon:'loading',
+      title: '正在建设中。。。',
     });
   }
 })

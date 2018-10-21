@@ -62,3 +62,15 @@
   font-size:14px;
   margin-bottom:81px;
 }
+
+.notice-image {
+  width:25px;
+  height:25px;
+}
+
+.notice{
+  width:90%;
+  height: 25px;
+  background-color:#FFFFFF;
+  font-size:13px;
+}
