@@ -10,9 +10,41 @@ Page({
     answer:[{
       id:"",
       value:""
-    }]
+    }],
+    hasShare:false,
+    lookAnswer:null
   },
-  onLoad:function() {
+  onShareAppMessage:function(options) {
+    var that = this;
+    var shareObj = {
+      title: '快来解题赚积分换礼品',
+      success:function(res) {
+        if(res.errMsg == 'shareAppMessage:ok') {
+          common.post('/user/question/look/answer',{id:that.data.question.id}).then(res => {
+            that.setData({
+              hasShare:true,
+              lookAnswer:res.result
+            })
+          });
+        }
+      },
+      fail: function(res) {
+        console.log(res);
+        if (res.errMsg == 'shareAppMessage:fail cancel') {
+          wx.showToast({
+            title: '您取消了分享',
+          });
+        } else if (res.errMsg == 'shareAppMessage:fail') {
+          wx.showToast({
+            title: '分享失败',
+          });
+        }
+      }
+    }
+
+    return shareObj;
+  },
+  onLoad:function(obj) {
     common.post("/user/question/start").then(res =>{
       var article = res.result.content;
       var that = this;
@@ -24,11 +56,22 @@ Page({
       }
       this.setData({
         question: res.result,
-        answer:btnArray
-      })
+        answer:btnArray,
+        hasShare:false,
+        lookAnswer:null
+      });
+      if(obj!=null && obj != undefined) {
+        if(obj == true) {
+          wx.showToast({
+            title: '+10',
+            image: '/images/jf.png'
+          })
+        }
+      }
     });
   },
   btnList:function(e){
+    let that = this;
     var temp = this.data.answer;
     var i = 0;
     for (i; i < temp.length; i++) {
@@ -49,7 +92,11 @@ Page({
     }
     if(i == temp.length) {
       common.post("/user/question/answer", { questionId: this.data.question.id, answer: answerStr }).then(res => {
-        this.onLoad();
+        wx.showToast({
+          title: '+10',
+          image: '/images/jf.png'
+        });
+        that.onLoad(true);
       })
     }
   },

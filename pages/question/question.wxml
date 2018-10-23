@@ -8,6 +8,15 @@
       <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
     </textarea>
   </view>
+  <view style="margin-top:5px">
+    <button wx:if="{{!hasShare}}" type='primary' size='mini' open-type='share'>
+      <image src='/images/fx.png' style='width:16px;height:16px;'></image>
+      看答案
+    </button>
+    <button wx:else type='primary' size='mini' >
+      {{lookAnswer}}
+    </button>
+  </view>
   <view class="question-answer">
     <button id='{{item.id}}' wx:for="{{answer}}" bindtap='btnAnswer'>{{item.value}}</button>
   </view>
