@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/activity/index",
     "pages/question/question",
-    "pages/ranking/ranking"
+    "pages/ranking/ranking",
+    "pages/exchange/exchange"
   ],
   "window":{
     "backgroundTextStyle":"light",

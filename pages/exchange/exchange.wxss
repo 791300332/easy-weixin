@@ -3,6 +3,13 @@
 .ranking-body {
   padding: 20rpx 20rpx;
 }
+.explain {
+  background:rgba(0,0,0,0.2);
+  color:#FFFFFF;
+}
+.list{
+  margin-top:20px;
+}
 
 .item {
   width:100%;
@@ -10,30 +17,30 @@
 }
 
 .item image {
-  width:48px;
-  height:48px;
+  width:64px;
+  height:100px;
   float:left;
-  border-radius: 50%;
-  margin-top:7px;
-  margin-left:15px;
 }
 
 .item-info {
   float:left;
+  text-align: left;
+  letter-spacing: 2px;
+  width:50%;
+  margin-left:2%
 }
 
 .item-info-name {
   font-size:16px;
-  color:#aaa
 }
 
 .item-info-level {
   font-size:12px;
-  color:green;
-  margin-top:-10px;
-  margin-left:15px
+  line-height: 18px;
+  color:#aaa
 }
 
 .item-question-answer {
   float:right;
+  width:28%
 }

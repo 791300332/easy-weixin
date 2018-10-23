@@ -1,0 +1,24 @@
+<view class="page-body">
+  <view class="explain">
+      <p>说明:目前还没有完成自动兑换的功能，如果您满足兑换条件并且需要兑换奖品，您可以到首页发消息给客服人员，我们将在1~2个工作日内处理您的申请</p>
+  </view>
+  <view class="list"><!-- 列表 -->
+    <button class='item' wx:for="{{awards}}"> <!-- 单条 -->
+      <view style='width:20%'>
+        <image src="{{item.smallImageUrl}}"/> <!-- 图片 -->
+      </view>
+      <view class='item-info'>
+        <view class="item-info-name">{{item.name}}</view><!-- 商品名称 -->
+        <view class="item-info-level">{{item.introduce}}</view><!-- 王者等级 -->
+      </view>
+      <view class='item-question-answer'>
+        <view>
+          <span style="color:red">{{item.needScore}}</span>积分
+        </view>
+        <view style='font-size:14px;color:#CD9B1D'>
+           剩余<span style="color:#FF8C00">10</span>件
+        </view>
+      </view>
+    </button>
+  </view>
+</view>

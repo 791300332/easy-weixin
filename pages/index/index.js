@@ -65,9 +65,8 @@ Page({
     });
   },
   btnGwc:function(){
-    wx.showToast({
-      icon:'loading',
-      title: '正在建设中。。。',
-    });
+    wx.navigateTo({
+      url: '/pages/exchange/exchange',
+    })
   }
 })
