@@ -18,6 +18,7 @@ Page({
     var that = this;
     var shareObj = {
       title: '快来解题赚积分换礼品',
+      path:'/pages/index/index',
       success:function(res) {
         if(res.errMsg == 'shareAppMessage:ok') {
           common.post('/user/question/look/answer',{id:that.data.question.id}).then(res => {
