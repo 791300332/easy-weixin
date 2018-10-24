@@ -1,1 +1,98 @@
-/* pages/wolf/wolf.wxss */
+@import "../../lib/common.wxss";
+
+.ranking-body {
+  padding: 20rpx 20rpx;
+}
+
+.item {
+  width:100%;
+  background-color:#FFEFD5;
+  margin-top:5px;
+}
+
+.item image {
+  width:48px;
+  height:48px;
+  float:left;
+  border-radius: 50%;
+  margin-top:7px;
+}
+
+.item-info {
+  width:40%;
+  padding:15px;
+  float:left;
+  text-align: left;
+}
+
+.item-info-name {
+  font-size:16px;
+  color:#aaa
+}
+
+
+.item-right {
+  width:40%;
+  float:right;
+  text-align: right;
+}
+
+.item-image-view {
+  margin-top:-70px;
+}
+
+.item-right-image {
+  float:right;
+}
+
+.item-right image {
+  width:24px;
+  height:24px;
+  border-radius: 50%;
+  margin-left:-15px;
+}
+
+.item-right-num {
+  color:#FF8C00;
+  margin-top:31px;
+}
+
+.room-header {
+
+}
+
+.room-out {
+  width:20%;
+  float:right;
+}
+
+.room-out button{
+  width:36px;
+  height:36px;
+}
+
+.room-out image{
+  width:36px;
+  height:36px;
+  float:right;
+}
+
+.room-user {
+  float:left;
+  width:80%;
+}
+
+.room-user button{
+  width:48px;
+  height:48px;
+  float:left;
+}
+
+.room-user image{
+  width:47px;
+  height:47px;
+  /* border-radius: 50%; */
+  margin-left:-15px;
+}
+
+

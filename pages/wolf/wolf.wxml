@@ -1,3 +1,37 @@
-<view>
-房间列表
+<view class="ranking-body">
+  <view wx:if="{{!hasJoin}}"><!-- 列表 -->
+    <button wx:for="{{list}}" wx:for-item="item" id='{{item.roomId}}' class='item'  bindtap='btnJoin'> <!-- 单条 -->
+      <view>
+        <image src="/images/fjtp.png"/> 
+      </view>
+      <view class='item-info'>
+        <view>
+          <view class="item-info-name">{{item.roomId}}</view>
+        </view>
+      </view>
+      <view class='item-right'>
+        <view class='item-image-view'>
+           <view wx:for="{{item.users}}" wx:for-item="tx" class='item-right-image'>
+            <image  src='{{tx.avatarUrl}}'></image>
+          </view>
+        </view>
+        <view class="item-right-num"> {{item.hasNum}}/{{item.needTotalNum}}</view>
+      </view>
+    </button>
+  </view>
+  <view wx:else>
+    <view class="room-header"> 
+      <view class="room-out">
+        <image src='/images/tc.png' bindtap='btnLeft'/>
+      </view>
+      <view class="room-user">
+        <button wx:for="{{room.users}}">
+          <image  src="{{item.avatarUrl}}"/>
+        </button>
+        <button wx:for="{{needAdd}}" open-type='share'>
+          <image src="/images/jh.png"/>
+        </button>
+      </view>
+    </view>
+  </view>
 </view>

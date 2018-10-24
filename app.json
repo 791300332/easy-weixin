@@ -22,6 +22,8 @@
       "selectedIconPath": "images/syxz.png"
     },{
       "pagePath":"pages/wolf/wolf",
+      "iconPath":"images/wolf.png",
+      "selectedIconPath":"images/wolfxz.png",
       "text":"狼人杀"
     },{
       "pagePath": "pages/activity/index",

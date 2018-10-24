@@ -20,14 +20,12 @@ Page({
       title: '快来解题赚积分换礼品',
       path:'/pages/index/index',
       success:function(res) {
-        if(res.errMsg == 'shareAppMessage:ok') {
-          common.post('/user/question/look/answer',{id:that.data.question.id}).then(res => {
-            that.setData({
-              hasShare:true,
-              lookAnswer:res.result
-            })
-          });
-        }
+        common.post('/user/question/look/answer',{id:that.data.question.id}).then(res => {
+          that.setData({
+            hasShare:true,
+            lookAnswer:res.result
+          })
+        });
       },
       fail: function(res) {
         console.log(res);
