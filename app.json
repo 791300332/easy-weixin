@@ -4,7 +4,8 @@
     "pages/activity/index",
     "pages/question/question",
     "pages/ranking/ranking",
-    "pages/exchange/exchange"
+    "pages/exchange/exchange",
+    "pages/wolf/wolf"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -19,6 +20,9 @@
       "text": "首页",
       "iconPath": "images/sy.png",
       "selectedIconPath": "images/syxz.png"
+    },{
+      "pagePath":"pages/wolf/wolf",
+      "text":"狼人杀"
     },{
       "pagePath": "pages/activity/index",
       "text": "每日活动",

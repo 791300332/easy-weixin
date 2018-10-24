@@ -8,27 +8,32 @@ Page({
     url:"/images/wzry.png",
     defaultUrl:"/images/mrtx.png",
     currentPage:0,
+    pageSize: 10,
     isLast:false
   },
   onShow:function() {
     
   },
   onLoad:function(){
-    if(!this.data.isLast) {
+    let that = this;
+    this.handleData(that);
+  },
+  onReachBottom:function(){
+    let that = this;
+    this.handleData(that);
+  },
+  handleData:function(obj) {
+    if (!obj.data.isLast) {
       var tempPage = this.data.currentPage + 1;
-      common.post("/user/miniapp/phb", {currentPage:tempPage}).then(res => {
-        var temp = [];
-        for(var i = 0;i<res.result.list.length;i++) {
+      common.post("/user/miniapp/phb", { currentPage: tempPage, pageSize: obj.data.pageSize }).then(res => {
+        var temp = obj.data.phbList;
+        for (var i = 0; i < res.result.list.length; i++) {
           temp.push(res.result.list[i]);
         }
-        if(this.data.currentPage == res.result.totalPage) {
-          this.setData({
-            isLast:true
-          });
-        }
-        this.setData({
-          phbList:temp,
-          currentPage:res.result.currentPage
+        obj.setData({
+          phbList: temp,
+          currentPage: res.result.currentPage,
+          isLast: res.result.currentPage == res.result.pageCount
         })
       }).catch(res => {
       })
