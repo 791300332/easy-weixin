@@ -82,6 +82,9 @@
         <span wx:elif="{{item.identify=='WITCH'}}">女巫</span>
         <span wx:elif="{{item.identify=='SEER'}}">预言家</span>
       </view>
+      <view wx:if='{{room.ownerId == userInfo.xCardUserId}}'>
+        <button bindtap='startGame' size='mini' type='warn'>重新开始</button>
+      </view>
     </view>
     </block>
   </view>

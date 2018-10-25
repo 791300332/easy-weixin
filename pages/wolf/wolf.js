@@ -54,6 +54,9 @@ Page({
     common.post('/wolf/kill/hasJoin', {}).then(res => {
       let isJoin = res.result;
       if (!isJoin) {
+        wx.setNavigationBarTitle({
+          title: '杀狼人',
+        })
         var tempNum = that.data.timeoutNum;
         if (tempNum != null) {
           clearTimeout(tempNum);
@@ -74,6 +77,9 @@ Page({
 
   updateRoomInfo:function(that) {
     common.post('/wolf/kill/room', {}).then(res => {
+      wx.setNavigationBarTitle({
+        title: '房间号:' + res.result.roomId,
+      })
       var needNum = res.result.needTotalNum - res.result.hasNum;
       var temp = [];
       for (var i = 0; i < needNum; i++) {
@@ -233,7 +239,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    
   },
 
   /**
