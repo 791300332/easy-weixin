@@ -22,9 +22,9 @@
       "selectedIconPath": "images/syxz.png"
     },{
       "pagePath":"pages/wolf/wolf",
-      "iconPath":"images/wolf.png",
+      "iconPath":"images/wolftb.png",
       "selectedIconPath":"images/wolfxz.png",
-      "text":"狼人杀"
+      "text":"杀狼人"
     },{
       "pagePath": "pages/activity/index",
       "text": "每日活动",

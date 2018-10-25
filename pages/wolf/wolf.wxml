@@ -61,19 +61,28 @@
         </button>
       </view>
     </view>
-    <view>
-      <view wx:if="{{room.hasNum != room.needTotalNum}}" style='text-align:center;line-height:200rpx;padding:30%'>
-        等待中。。。
+    <view wx:if="{{room.hasNum != room.needTotalNum}}" style='text-align:center;line-height:200rpx;padding:30%'>
+      等待中。。。
+    </view>
+    <view wx:elif="{{room.status =='创建' && room.ownerId != userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
+      等待房主开始
+    </view>
+    <view wx:elif="{{room.status =='创建' &&room.ownerId == userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
+      <button size='mini' type='warn' bindtap='startGame'>开始</button>
+    </view>
+    <block wx:else>
+    <view wx:for='{{room.userIdentify}}' wx:if='{{userInfo.xCardUserId == item.userId}}' class='identify-view'>
+      <view>
+        <image src='/images/{{item.identify}}.png'></image>
       </view>
-      <view wx:elif="{{room.status =='创建' && room.ownerId != userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
-        等待房主开始
-      </view>
-      <view wx:elif="{{room.status =='创建' &&room.ownerId == userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
-        <button size='mini' type='warn' bindtap='startGame'>开始</button>
-      </view>
-      <view wx:else style='text-align:center;line-height:200rpx;padding:30%'>
-        <button size='mini' type='warn' bindtap='startGame'>显示身份</button>
+      <view>
+        <span wx:if="{{item.identify=='VILLAGER'}}">平民</span>
+        <span wx:elif="{{item.identify=='WOLF'}}">狼人</span>
+        <span wx:elif="{{item.identify=='HUNTER'}}">猎人</span>
+        <span wx:elif="{{item.identify=='WITCH'}}">女巫</span>
+        <span wx:elif="{{item.identify=='SEER'}}">预言家</span>
       </view>
     </view>
+    </block>
   </view>
 </view>
