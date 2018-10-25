@@ -59,7 +59,7 @@ Page({
         hasShare:false,
         lookAnswer:null
       });
-      if(obj!=null && obj != undefined) {
+      if(obj!=null && obj != undefined && obj != '') {
         if(obj == true) {
           wx.showToast({
             title: '+10',
@@ -91,10 +91,6 @@ Page({
     }
     if(i == temp.length) {
       common.post("/user/question/answer", { questionId: this.data.question.id, answer: answerStr }).then(res => {
-        wx.showToast({
-          title: '+10',
-          image: '/images/jf.png'
-        });
         that.onLoad(true);
       })
     }

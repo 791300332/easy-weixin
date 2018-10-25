@@ -18,6 +18,27 @@
         <view class="item-right-num"> {{item.hasNum}}/{{item.needTotalNum}}</view>
       </view>
     </button>
+    <view class="btn-view">
+      <modal hidden='{{modalCreate}}' title='创建房间' confirm-text='创建' cancel-text='取消' bindcancel='cancelCreate' bindconfirm='confirmCreate'>
+        <view class='mymodal-view'>
+          <view class='mymodal-view-title'>
+            <span>*</span>房间号:
+          </view>
+          <input id='roomId' type='text' value='{{createInfo.roomId}}' maxlength="5" bindchange='changeCreateRoomId'/>
+        </view>
+        <view wx:for="{{createInfo.identifyDTO}}" class='mymodal-view'>
+          <view class='mymodal-view-title'>
+            <span>*</span>{{item.name}}:
+          </view>
+          <input id='{{item.identify}}' type='number' value='{{item.num}}' bindchange='createInputChange' />
+        </view>
+      </modal>
+      <button class="btn-create" bindtap='btnModalCreate'>创建</button>
+      <modal hidden='{{modalJoin}}' title='加入房间' confirm-text='加入' cancel-text='取消' bindcancel='cancelJoin' bindconfirm='confirmJoin'>
+        <input placeholder='输入房间号' type='text' bindchange='changeJoinRoomId'/>
+      </modal>
+      <button class="btn-join" bindtap='btnModalJoin'>加入</button>
+    </view>
   </view>
   <view wx:else>
     <view class="room-header"> 
@@ -25,12 +46,33 @@
         <image src='/images/tc.png' bindtap='btnLeft'/>
       </view>
       <view class="room-user">
-        <button wx:for="{{room.users}}">
-          <image  src="{{item.avatarUrl}}"/>
-        </button>
+        <block wx:if="{{userInfo.xCardUserId == room.ownerId}}">
+          <button wx:for="{{room.users}}" id='{{item.xCardUserId}}' bindtap='delUser'>
+            <image  src="{{item.avatarUrl}}"/>
+          </button>
+        </block>
+        <block wx:else>
+          <button wx:for="{{room.users}}">
+            <image  src="{{item.avatarUrl}}"/>
+          </button>
+        </block>
         <button wx:for="{{needAdd}}" open-type='share'>
           <image src="/images/jh.png"/>
         </button>
+      </view>
+    </view>
+    <view>
+      <view wx:if="{{room.hasNum != room.needTotalNum}}" style='text-align:center;line-height:200rpx;padding:30%'>
+        等待中。。。
+      </view>
+      <view wx:elif="{{room.status =='创建' && room.ownerId != userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
+        等待房主开始
+      </view>
+      <view wx:elif="{{room.status =='创建' &&room.ownerId == userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
+        <button size='mini' type='warn' bindtap='startGame'>开始</button>
+      </view>
+      <view wx:else style='text-align:center;line-height:200rpx;padding:30%'>
+        <button size='mini' type='warn' bindtap='startGame'>显示身份</button>
       </view>
     </view>
   </view>

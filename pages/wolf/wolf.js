@@ -2,10 +2,26 @@
 var common = require('../../utils/api.js')
 Page({
   data: {
+    userInfo:{},
     list:[],
     room:null,
     needAdd:[],
-    hasJoin:false
+    hasJoin:false,
+    modalCreate:true,
+    modalJoin:true,
+    joinRoomId:null,
+    listen:false,
+    timeoutNum:null,
+    createInfo:{
+      roomId:'',
+      identifyDTO:[
+        { "identify": "SEER", "num": 1, "name": "预言家"},
+        { "identify": "WITCH", "num": 1, "name": "女巫" },
+        { "identify": "HUNTER", "num": 1, "name": "猎人" },
+        { "identify": "WOLF", "num": 4, "name": "狼人"},
+        { "identify": "VILLAGER", "num": 4, "name": "村民" }
+      ]
+    },
   },
 
   /**
@@ -19,39 +35,59 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    common.post('/user/miniapp/getInfo',{}).then(res =>{
+      this.setData({
+        userInfo:res.result
+      })
+    })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.updateRoom();
+  },
+
+  updateRoom:function(){
     let that = this;
     common.post('/wolf/kill/hasJoin', {}).then(res => {
       let isJoin = res.result;
       if (!isJoin) {
-        common.post('/wolf/kill/list',{}).then(res => {
+        var tempNum = that.data.timeoutNum;
+        if (tempNum != null) {
+          clearTimeout(tempNum);
+        }
+        common.post('/wolf/kill/list', {}).then(res => {
           that.setData({
-            list:res.result,
-            hasJoin:isJoin
+            list: res.result,
+            hasJoin: isJoin,
+            listen: false,
+            timeoutNum: null
           })
         })
       } else {
-        common.post('/wolf/kill/room',{}).then(res =>{
-          var needNum = res.result.needTotalNum - res.result.hasNum;
-          var temp = [];
-          for(var i = 0;i<needNum;i++) {
-            temp.push(i);
-          }
-          console.log(temp);
-          that.setData({
-            room:res.result,
-            hasJoin:isJoin,
-            needAdd:temp
-          })
-        });
+        that.updateRoomInfo(that);
       }
     })
+  },
+
+  updateRoomInfo:function(that) {
+    common.post('/wolf/kill/room', {}).then(res => {
+      var needNum = res.result.needTotalNum - res.result.hasNum;
+      var temp = [];
+      for (var i = 0; i < needNum; i++) {
+        temp.push(i);
+      }
+      var tempNum = setTimeout(that.updateRoom, 5000);
+      that.setData({
+        room: res.result,
+        hasJoin: true,
+        needAdd: temp,
+        listen: true,
+        timeoutNum: tempNum
+      })
+    });
   },
 
   btnJoin:function(e) {
@@ -67,9 +103,119 @@ Page({
       that.onShow();
     }) 
   },
+  btnModalCreate:function(e) {
+    var temp = this.data.createInfo;
+    var randStr = common.randomString(4);
+    temp.roomId = randStr
+    this.setData({
+      modalCreate:false,
+      createInfo:temp
+    });
+  },
+  btnModalJoin:function(e) {
+    this.setData({
+      modalJoin:false
+    })
+  },
+  createInputChange:function(e) {
+    var id = e.target.id;
+    var value = e.detail.value;
+    var temp = this.data.createInfo.identifyDTO;
+    for(var i = 0;i<temp.length;i++) {
+      var obj = temp[i];
+      if(obj.identify == id) {
+        obj.num = value;
+      }
+    }
+    this.setData({
+      createInfo:temp
+    })
+  },
+  confirmCreate:function(e) {
+    let that = this;
+    common.post('/wolf/kill/create', this.data.createInfo).then(res => {
+      var needNum = res.result.needTotalNum - res.result.hasNum;
+      var temp = [];
+      for (var i = 0; i < needNum; i++) {
+        temp.push(i);
+      }
+      that.setData({
+        modalCreate: true,
+        hasJoin:true,
+        room:res.result,
+        needAdd:temp
+      })
+    }).catch(e => {
+      console.log(e);
+    })
+  },
 
-  btnYq:function(e) {
+  changeCreateRoomId:function(e) {
+    var temp = this.data.createInfo;
+    temp.roomId = e.detail.value;
+    this.setData({
+      createInfo:temp
+    })
+  },
 
+  changeJoinRoomId:function(e) {
+    this.setData({
+      joinRoomId:e.detail.value
+    })
+  },
+
+  confirmJoin:function(e) {
+    var temp = this.data.joinRoomId;
+    var that = this;
+    if (temp == null || temp == '') {
+      wx.showToast({
+        title: '房间号不能为空',
+      });
+    }else {
+      common.post('/wolf/kill/join', { roomId: temp}).then(res => {
+        that.setData({
+          modalJoin:true
+        })
+        that.onShow();
+      })
+    }
+  },
+
+  cancelJoin:function(e) {
+    let that = this;
+    that.setData({
+      modalJoin: true
+    });
+  },
+
+  cancelCreate:function(e) {
+    let that = this;
+    that.setData({
+      modalCreate: true
+    });
+  },
+
+  delUser:function(e) {
+    var that = this;
+    var id = e.target.id;
+    wx.showModal({
+      title: '踢人',
+      content: '你确定要删除他吗',
+      success:function(res) {
+        if(res.confirm) {
+          common.post('/wolf/kill/del', { xCardUserId: id }).then(res => {
+            that.onShow();
+          })
+        }
+      }
+    })
+  },
+
+  startGame: function(){
+    let that = this;
+    common.post('/wolf/kill/startGame',{}).then(res =>{
+      that.updateRoom();
+    })
   },
   /**
    * 生命周期函数--监听页面隐藏
@@ -82,7 +228,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    this.btnLeft();
   },
 
   /**
