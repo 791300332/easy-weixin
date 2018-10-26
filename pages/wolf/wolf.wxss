@@ -58,7 +58,8 @@
 }
 
 .room-header {
-
+  width:100%;
+  height:auto;
 }
 
 .room-out {
@@ -136,5 +137,18 @@
   display:block;
   overflow: hidden;
   border-style: solid;
+}
+
+.identify-view {
+  text-align:center;
+  font-size:24px;
+  justify-content:center;
+  align-items:center;
+}
+
+.identify-view image {
+  margin-top:25px;
+  width:250px;
+  height:250px;
 }
 

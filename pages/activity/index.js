@@ -36,7 +36,7 @@ Page({
   },
   onShow:function(){
     wx.setNavigationBarTitle({
-      title: '首页',
+      title: '每日活动',
     })
     common.post("/user/miniapp/getInfo").then(res => {
       getApp().globalData.userInfo = res.result

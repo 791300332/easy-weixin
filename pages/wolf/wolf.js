@@ -55,10 +55,13 @@ Page({
 
   updateRoom:function(obj){
     if(!obj.data.isHide) {
-      let that = obj;
+      let that = this;
       common.post('/wolf/kill/hasJoin', {}).then(res => {
         let isJoin = res.result;
         if (!isJoin) {
+          wx.setNavigationBarTitle({
+            title: '杀狼人',
+          })
           var tempNum = that.data.timeoutNum;
           if (tempNum != null) {
             clearTimeout(tempNum);
@@ -80,6 +83,9 @@ Page({
 
   updateRoomInfo:function(that) {
     common.post('/wolf/kill/room', {}).then(res => {
+      wx.setNavigationBarTitle({
+        title: '房间号:' + res.result.roomId,
+      })
       var needNum = res.result.needTotalNum - res.result.hasNum;
       var temp = [];
       for (var i = 0; i < needNum; i++) {
@@ -105,9 +111,17 @@ Page({
 
   btnLeft:function(e) {
     let that = this;
-    common.post('/wolf/kill/left',{}).then(res =>{
-      that.onShow();
-    }) 
+    wx.showModal({
+      title: '退出',
+      content: '确定要退出吗?',
+      success:function(e) {
+        if(e.confirm) {
+          common.post('/wolf/kill/left', {}).then(res => {
+            that.onShow();
+          }) 
+        }
+      }
+    })
   },
   btnModalCreate:function(e) {
     var temp = this.data.createInfo;
@@ -126,9 +140,9 @@ Page({
   createInputChange:function(e) {
     var id = e.target.id;
     var value = e.detail.value;
-    var temp = this.data.createInfo.identifyDTO;
-    for(var i = 0;i<temp.length;i++) {
-      var obj = temp[i];
+    var temp = this.data.createInfo;
+    for (var i = 0; i < temp.identifyDTO.length;i++) {
+      var obj = temp.identifyDTO[i];
       if(obj.identify == id) {
         obj.num = value;
       }
@@ -140,17 +154,7 @@ Page({
   confirmCreate:function(e) {
     let that = this;
     common.post('/wolf/kill/create', this.data.createInfo).then(res => {
-      var needNum = res.result.needTotalNum - res.result.hasNum;
-      var temp = [];
-      for (var i = 0; i < needNum; i++) {
-        temp.push(i);
-      }
-      that.setData({
-        modalCreate: true,
-        hasJoin:true,
-        room:res.result,
-        needAdd:temp
-      })
+      that.onShow();
     }).catch(e => {
       console.log(e);
     })
@@ -243,7 +247,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    
   },
 
   /**
