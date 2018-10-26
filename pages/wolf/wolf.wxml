@@ -4,7 +4,9 @@
       <view>
         <image src="/images/fjtp.png"/> 
       </view>
-      <view class='item-info'>
+      <view class='item-info'
+      
+      >
         <view>
           <view class="item-info-name">{{item.roomId}}</view>
         </view>

@@ -35,6 +35,9 @@ Page({
     text: ["666积分", "100积分", "50积分", "20积分", "10积分", "谢谢参与"],//每个扇形中的文字填充
   },
   onShow:function(){
+    wx.setNavigationBarTitle({
+      title: '首页',
+    })
     common.post("/user/miniapp/getInfo").then(res => {
       getApp().globalData.userInfo = res.result
       if (getApp().userInfoReadyCallback) {

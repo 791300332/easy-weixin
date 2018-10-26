@@ -15,6 +15,9 @@ Page({
     notices:[]
   },
   onShow: function () {
+    wx.setNavigationBarTitle({
+      title: '首页',
+    })
     let that = this;
     common.post("/user/miniapp/getInfo").then(res => {
       getApp().globalData.userInfo = res.result

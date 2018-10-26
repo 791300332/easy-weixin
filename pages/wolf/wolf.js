@@ -12,6 +12,7 @@ Page({
     joinRoomId:null,
     listen:false,
     timeoutNum:null,
+    isHide:false,
     createInfo:{
       roomId:'',
       identifyDTO:[
@@ -46,30 +47,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.updateRoom();
+    this.setData({
+      isHide:false
+    })
+    this.updateRoom(this);
   },
 
-  updateRoom:function(){
-    let that = this;
-    common.post('/wolf/kill/hasJoin', {}).then(res => {
-      let isJoin = res.result;
-      if (!isJoin) {
-        var tempNum = that.data.timeoutNum;
-        if (tempNum != null) {
-          clearTimeout(tempNum);
-        }
-        common.post('/wolf/kill/list', {}).then(res => {
-          that.setData({
-            list: res.result,
-            hasJoin: isJoin,
-            listen: false,
-            timeoutNum: null
+  updateRoom:function(obj){
+    if(!obj.data.isHide) {
+      let that = obj;
+      common.post('/wolf/kill/hasJoin', {}).then(res => {
+        let isJoin = res.result;
+        if (!isJoin) {
+          var tempNum = that.data.timeoutNum;
+          if (tempNum != null) {
+            clearTimeout(tempNum);
+          }
+          common.post('/wolf/kill/list', {}).then(res => {
+            that.setData({
+              list: res.result,
+              hasJoin: isJoin,
+              listen: false,
+              timeoutNum: null
+            })
           })
-        })
-      } else {
-        that.updateRoomInfo(that);
-      }
-    })
+        } else {
+          that.updateRoomInfo(that);
+        }
+      })
+    }
   },
 
   updateRoomInfo:function(that) {
@@ -79,7 +85,7 @@ Page({
       for (var i = 0; i < needNum; i++) {
         temp.push(i);
       }
-      var tempNum = setTimeout(that.updateRoom, 5000);
+      var tempNum = setTimeout(that.updateRoom, 5000,that);
       that.setData({
         room: res.result,
         hasJoin: true,
@@ -221,7 +227,9 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    this.setData({
+      isHide:true
+    })
   },
 
   /**
@@ -254,6 +262,7 @@ Page({
     var shareObj = {
       title: '饭桌狼人杀，不需带牌，随时随地浪起来',
       path: '/pages/wolf/wolf',
+      imageUrl:'/images/WOLF.png',
       success: function (res) {
         
       },
