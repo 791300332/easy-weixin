@@ -70,7 +70,7 @@
       </view>
     </view>
     <view wx:if="{{room.hasNum != room.needTotalNum}}" style='text-align:center;line-height:200rpx;padding:30%'>
-      等待中。。。
+      还差<span style="color:red;font-size:20px">{{room.needTotalNum - room.hasNum}}</span>人。。。
     </view>
     <view wx:elif="{{room.status =='创建' && room.ownerId != userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
       等待房主开始
