@@ -78,7 +78,8 @@ Page({
             userInfo: userInfo,
             modalJoin:true,
             modalCreate:true,
-            modalFg:true
+            modalFg:true,
+            room:null
           })
         })
       } else {
@@ -151,7 +152,7 @@ Page({
       var status = result.status;
       if (status == 'none') {
 
-      } else if (status == 'delete' && this.hasJoin) {
+      } else if (status == 'delete' && this.data.hasJoin) {
         this.onShow();
       } else if (status == 'update') {
         that.putRoomInfo(that, JSON.parse(result.room));
@@ -371,7 +372,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    
+    wx.setcolor
+    wx.stopPullDownRefresh();
+    this.onShow();
   },
 
   /**
