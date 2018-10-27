@@ -63,19 +63,19 @@
 }
 
 .room-out {
-  width:20%;
   float:right;
 }
 
 .room-out button{
-  width:36px;
-  height:36px;
+  position:absolute;
+  top:15px;
+  right:15px;
 }
 
 .room-out image{
   width:36px;
   height:36px;
-  float:right;
+  /* float:right; */
 }
 
 .room-user {
@@ -147,8 +147,15 @@
 }
 
 .identify-view image {
-  margin-top:25px;
+  margin-top:40px;
+  margin-left:30px;
   width:250px;
   height:250px;
+}
+
+
+.fg-span{
+  font-size:20px;
+  color:#FF4500;
 }
 

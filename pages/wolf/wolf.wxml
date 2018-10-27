@@ -28,6 +28,12 @@
           </view>
           <input id='roomId' type='text' value='{{createInfo.roomId}}' maxlength="5" bindchange='changeCreateRoomId'/>
         </view>
+        <view class='mymodal-view'>
+          <view class='mymodal-view-title'>
+            <span>*</span>法官:
+          </view>
+          <input type='number' value='1' disabled='true' />
+        </view>
         <view wx:for="{{createInfo.identifyDTO}}" class='mymodal-view'>
           <view class='mymodal-view-title'>
             <span>*</span>{{item.name}}:
@@ -47,7 +53,7 @@
       <view class="room-out">
         <image src='/images/tc.png' bindtap='btnLeft'/>
       </view>
-      <view class="room-user">
+      <view wx:if='{{room.status =="创建"}}' class="room-user">
         <block wx:if="{{userInfo.xCardUserId == room.ownerId}}">
           <button wx:for="{{room.users}}" id='{{item.xCardUserId}}' bindtap='delUser'>
             <image  src="{{item.avatarUrl}}"/>
@@ -69,23 +75,59 @@
     <view wx:elif="{{room.status =='创建' && room.ownerId != userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
       等待房主开始
     </view>
-    <view wx:elif="{{room.status =='创建' &&room.ownerId == userInfo.xCardUserId}}" style='text-align:center;line-height:200rpx;padding:30%'>
-      <button size='mini' type='warn' bindtap='startGame'>开始</button>
+    <view wx:elif="{{room.status =='创建' &&room.ownerId == userInfo.xCardUserId}}" class='identify-view'>
+      <view>
+        <image wx:if='{{fg == null}}' src='/images/mrtx.png' style="width:80px;height:80px;margin-left:0px;" bindtap='btnModalFg'/>
+        <image wx:else src='{{fg.avatarUrl}}' style="width:80px;height:80px;margin-left:0px;" bindtap='btnModalFg'/>
+      </view>
+      <view style="font-size:20px;color:#FF7F00">
+      <modal hidden='{{modalFg}}' title='选择法官' confirm-text='确定' cancel-text='取消' bindcancel='cancelFg' bindconfirm='confirmFg'>
+        <picker range='{{room.users}}' range-key='nickName' value='{{index}}' bindchange='pickerChange'>
+          <view style='text-align:center'>
+            {{room.users[index].nickName}}
+          </view>
+        </picker>
+      </modal>
+        指定法官
+      </view>
+      <view style='margin-top:15px;'>
+        <button size='mini' type='warn' bindtap='startGame'>开始</button>
+      </view>
     </view>
     <block wx:else>
     <view wx:for='{{room.userIdentify}}' wx:if='{{userInfo.xCardUserId == item.userId}}' class='identify-view'>
-      <view>
-        <image src='/images/{{item.identify}}.png'></image>
-      </view>
-      <view>
-        <span wx:if="{{item.identify=='VILLAGER'}}">平民</span>
-        <span wx:elif="{{item.identify=='WOLF'}}">狼人</span>
-        <span wx:elif="{{item.identify=='HUNTER'}}">猎人</span>
-        <span wx:elif="{{item.identify=='WITCH'}}">女巫</span>
-        <span wx:elif="{{item.identify=='SEER'}}">预言家</span>
-      </view>
+      <block wx:if="{{item.identify != 'JUDGE'}}">
+        <view>
+          <image src='/images/{{item.identify}}.png'></image>
+        </view>
+        <view>
+          <span wx:if="{{item.identify=='VILLAGER'}}">平民</span>
+          <span wx:elif="{{item.identify=='WOLF'}}">狼人</span>
+          <span wx:elif="{{item.identify=='HUNTER'}}">猎人</span>
+          <span wx:elif="{{item.identify=='WITCH'}}">女巫</span>
+          <span wx:elif="{{item.identify=='SEER'}}">预言家</span>
+        </view>
+      </block>
+      <block wx:else>
+        <view wx:for='{{room.userIdentify}}' wx:for-item='iden' wx:if='{{iden.identify != "JUDGE"}}' >
+          <image src='{{iden.avatarUr}}'  style='width:30px;height:30px;'/>
+          <span style="color:gray">
+            {{iden.nickName}}
+          </span>
+          <span class="fg-span" wx:if="{{iden.identify=='VILLAGER'}}">平民</span>
+          <span class="fg-span" wx:elif="{{iden.identify=='WOLF'}}">狼人</span>
+          <span class="fg-span" wx:elif="{{iden.identify=='HUNTER'}}">猎人</span>
+          <span class="fg-span" wx:elif="{{iden.identify=='WITCH'}}">女巫</span>
+          <span class="fg-span" wx:elif="{{iden.identify=='SEER'}}">预言家</span>
+        </view>
+      </block>
       <view wx:if='{{room.ownerId == userInfo.xCardUserId}}'>
+        <view>
         <button bindtap='startGame' size='mini' type='warn'>重新开始</button>
+        </view>
+        <view>
+        <button bindtap='stopGame' size='mini' type='primary'>结束</button>
+        </view>
       </view>
     </view>
     </block>
