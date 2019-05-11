@@ -16,7 +16,7 @@
           <span style="color:red">{{item.needScore}}</span>积分
         </view>
         <view style='font-size:14px;color:#CD9B1D'>
-           剩余<span style="color:#FF8C00">10</span>件
+           剩余<span style="color:#FF8C00">{{item.surplus}}</span>件
         </view>
       </view>
     </button>
